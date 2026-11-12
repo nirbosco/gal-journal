@@ -413,13 +413,14 @@ $('#switchBtn').onclick = () => {
 };
 $('#authForm').onsubmit = async e => {
   e.preventDefault();
-  const email = $('#email').value.trim(), password = $('#password').value;
+  const email = $("#email").value.trim(), password = $('#password').value;
   const btn = $('#authBtn'); btn.disabled = true;
   try {
     if (signupMode) {
-      const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
-      if (error) throw error;
-      if (!data.session) showAuthMsg('היומן נפתח! שלחנו מייל לאישור. לוחצים על הקישור במייל וחוזרים לכאן להתחבר.', true);
+      const { error } = await sb.rpc('register_journal_owner', { p_email: email, p_password: password });
+      if (error) throw new Error(error.message);
+      const { error: e2 } = await sb.auth.signInWithPassword({ email: email.toLowerCase(), password });
+      if (e2) throw e2;
     } else {
       const { error } = await sb.auth.signInWithPassword({ email, password });
       if (error) throw error;
@@ -428,7 +429,9 @@ $('#authForm').onsubmit = async e => {
     const m = String(err.message || err);
     showAuthMsg(/Invalid login/i.test(m) ? 'האימייל או הסיסמה לא נכונים.' :
                 /not confirmed/i.test(m) ? 'צריך קודם לאשר את המייל (בדקו בתיבת הדואר).' :
-                /already registered/i.test(m) ? 'כבר יש יומן עם האימייל הזה. אפשר פשוט להתחבר.' : 'משהו השתבש: ' + m, false);
+                /signup_closed|already registered/i.test(m) ? 'היומן כבר נפתח. אפשר פשוט להתחבר.' :
+                /short_password/.test(m) ? 'הסיסמה צריכה להיות באורך 6 תווים לפחות.' :
+                /bad_email/.test(m) ? 'האימייל לא נראה תקין.' : 'משהו השתבש: ' + m, false);
   } finally { btn.disabled = false; }
 };
 
