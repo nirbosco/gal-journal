@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd43b">
+<title>היומן של גל</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playpen+Sans+Hebrew:wght@400;600;800&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2b2d42; --ink-soft:#5c5f7a; --paper:#fffdf5; --line:#dce8f3; --margin:#f6a5a5;
+  --yellow:#ffe066; --pink:#ffa8c5; --mint:#8ce99a; --sky:#8fd3ff; --lilac:#c4b5fd; --orange:#ffc078;
+  --accent:#ff6b6b; --accent-2:#4dabf7; --desk:#fff3bf;
+  --hand:'Playpen Sans Hebrew','Rubik',system-ui,sans-serif;
+  --ui:'Rubik',system-ui,sans-serif;
+  --shadow:0 3px 0 rgba(43,45,66,.12),0 8px 22px rgba(43,45,66,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:var(--ui);color:var(--ink);
+  background-color:var(--desk);
+  background-image:radial-gradient(rgba(255,107,107,.18) 2px,transparent 2.5px),radial-gradient(rgba(77,171,247,.16) 2px,transparent 2.5px);
+  background-size:38px 38px,38px 38px;background-position:0 0,19px 19px;
+  padding-bottom:calc(110px + env(safe-area-inset-bottom));
+}
+button{font:inherit;color:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:20;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background:linear-gradient(var(--desk) 75%,rgba(255,243,191,0));}
+.brand{display:flex;align-items:center;gap:10px;max-width:720px;margin:0 auto}
+.brand h1{font-family:var(--hand);font-weight:800;font-size:30px;margin:0;line-height:1.1;letter-spacing:-.5px}
+.brand h1 span{background:linear-gradient(transparent 58%,var(--pink) 58%);padding:0 4px}
+.brand .count{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.brand .spacer{flex:1}
+.icon-btn{width:42px;height:42px;border-radius:14px;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink);font-size:20px}
+.icon-btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.chips{display:flex;gap:8px;overflow-x:auto;max-width:720px;margin:12px auto 0;padding:2px 2px 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2.5px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px;font-weight:500;font-size:15px;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff}
+
+/* ---------- feed ---------- */
+main{max-width:720px;margin:0 auto;padding:6px 16px}
+.day-label{font-family:var(--hand);font-weight:600;font-size:17px;margin:22px 4px 10px;display:inline-block;background:#fff;border:2.5px dashed var(--ink);border-radius:12px;padding:3px 12px;transform:rotate(-1.5deg)}
+.card{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);padding:20px 18px 16px;margin:0 0 22px;cursor:pointer;transition:transform .15s}
+.card:nth-of-type(odd){transform:rotate(-.6deg)}
+.card:nth-of-type(even){transform:rotate(.6deg)}
+.card:active{transform:scale(.98)}
+.card .tape{position:absolute;top:-13px;left:50%;width:92px;height:26px;margin-left:-46px;background:var(--c,var(--yellow));opacity:.85;transform:rotate(-3deg);border-radius:3px;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px)}
+.card .meta{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+.badge{display:inline-flex;align-items:center;gap:4px;background:var(--c,var(--yellow));border:2px solid var(--ink);border-radius:999px;padding:1px 9px;font-weight:500;color:var(--ink);font-size:13px}
+.card h2{font-family:var(--hand);font-weight:800;font-size:22px;margin:2px 0 6px;line-height:1.3}
+.card .excerpt{font-family:var(--hand);font-size:16px;line-height:1.75;margin:0;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.card .mood{position:absolute;top:12px;left:14px;font-size:28px}
+.shared-dot{font-size:12px;color:#2f9e44;font-weight:700}
+.thumbs{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.polaroid{background:#fff;padding:6px 6px 18px;border:2px solid var(--ink);box-shadow:0 3px 8px rgba(0,0,0,.12);border-radius:4px}
+.polaroid img{display:block;width:100%;height:100%;object-fit:cover;background:#eee;border-radius:2px}
+.thumbs .polaroid{width:96px;height:112px}
+.thumbs .polaroid:nth-child(odd){transform:rotate(-3deg)}
+.thumbs .polaroid:nth-child(even){transform:rotate(2.5deg)}
+.thumbs .more{width:60px;display:grid;place-items:center;font-family:var(--hand);font-weight:800;font-size:20px}
+
+.empty{text-align:center;padding:60px 20px;font-family:var(--hand)}
+.empty .big{font-size:64px}
+.empty h2{font-size:24px;margin:10px 0 6px}
+.empty p{color:var(--ink-soft);font-size:17px;margin:0}
+
+/* ---------- FAB ---------- */
+.fab{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;align-items:center;gap:10px;border:3px solid var(--ink);background:var(--accent);color:#fff;border-radius:999px;
+  padding:14px 28px;font-family:var(--hand);font-weight:800;font-size:21px;box-shadow:0 5px 0 var(--ink);white-space:nowrap}
+.fab:active{transform:translate(-50%,3px);box-shadow:0 2px 0 var(--ink)}
+
+/* ---------- sheet (composer / viewer) ---------- */
+.sheet{position:fixed;inset:0;z-index:50;background:var(--desk);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:calc(12px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.sheet-inner{max-width:720px;margin:0 auto}
+.sheet-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sheet-bar .title{flex:1;font-family:var(--hand);font-weight:800;font-size:22px}
+.btn{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:9px 16px;font-weight:700;font-size:16px;box-shadow:0 3px 0 var(--ink);display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.btn.primary{background:var(--mint)}
+.btn.danger{background:#ffe3e3}
+.btn.wa{background:#25d366;color:#fff}
+.btn:disabled{opacity:.55}
+
+.section-label{font-family:var(--hand);font-weight:600;font-size:16px;margin:16px 4px 8px}
+.pick-row{display:flex;gap:8px;flex-wrap:wrap}
+.pick{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:8px 12px;font-weight:500;font-size:15px}
+.pick.on{background:var(--c,var(--yellow));box-shadow:inset 0 0 0 2px #fff}
+.moods{display:flex;gap:6px;flex-wrap:wrap}
+.moods button{width:46px;height:46px;border-radius:50%;border:2.5px solid transparent;background:#fff;font-size:24px;display:grid;place-items:center}
+.moods button.on{border-color:var(--ink);background:var(--yellow);transform:scale(1.1)}
+.colors{display:flex;gap:10px}
+.colors button{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);background:var(--c)}
+.colors button.on{box-shadow:0 0 0 3px #fff,0 0 0 5.5px var(--ink)}
+
+.page{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);margin-top:18px;overflow:hidden}
+.page::before{content:"";position:absolute;top:0;bottom:0;right:44px;width:2px;background:var(--margin);opacity:.8}
+.page .head{height:16px;background:var(--c,var(--yellow));border-bottom:2.5px solid var(--ink)}
+.page input,.page textarea{width:100%;border:0;background:transparent;font-family:var(--hand);color:var(--ink);outline:none;padding:0 58px 0 18px}
+.page input{font-size:23px;font-weight:800;height:58px;margin-top:6px}
+.page textarea{font-size:18px;line-height:34px;min-height:340px;resize:none;
+  background-image:linear-gradient(transparent 33px,var(--line) 33px,var(--line) 34px);background-size:100% 34px;background-attachment:local;padding-top:2px;padding-bottom:20px}
+.page input::placeholder,.page textarea::placeholder{color:#a6a9c0}
+.prompt-btn{margin:10px 58px 14px 18px;font-size:14px;border:2px dashed var(--ink-soft);background:transparent;border-radius:12px;padding:6px 12px;color:var(--ink-soft)}
+.date-input{border:2.5px solid var(--ink);border-radius:12px;padding:7px 10px;font:inherit;background:#fff;color:var(--ink)}
+
+.photo-actions{display:flex;gap:10px;flex-wrap:wrap}
+.photo-actions label{cursor:pointer}
+.photo-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+.photo-grid .polaroid{width:110px;height:128px;position:relative}
+.photo-grid .polaroid:nth-child(odd){transform:rotate(-2deg)}
+.photo-grid .polaroid:nth-child(even){transform:rotate(2deg)}
+.photo-grid .x{position:absolute;top:-10px;left:-10px;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;font-weight:800;display:grid;place-items:center;padding:0;font-size:15px}
+.save-row{display:flex;gap:10px;justify-content:center;margin-top:26px}
+.save-row .btn{font-size:19px;padding:12px 30px}
+
+/* viewer */
+.view-page{padding:24px 58px 26px 20px}
+.view-page h2{font-family:var(--hand);font-weight:800;font-size:28px;margin:6px 0 4px;line-height:1.3}
+.view-page .when{color:var(--ink-soft);font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.view-page .body{font-family:var(--hand);font-size:19px;line-height:34px;white-space:pre-wrap;margin-top:12px;
+  background-image:linear-gradient(transparent 33px,var(--line) 33px,var(--line) 34px);background-size:100% 34px;min-height:120px}
+.view-page .big-mood{position:absolute;top:26px;left:20px;font-size:40px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,40%),1fr));gap:16px;margin-top:22px}
+.gallery .polaroid{aspect-ratio:.86;cursor:zoom-in}
+.gallery .polaroid:nth-child(3n+1){transform:rotate(-2deg)}
+.gallery .polaroid:nth-child(3n+2){transform:rotate(1.5deg)}
+.view-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.view-actions .btn.wa{font-size:19px;padding:12px 26px}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:80;background:rgba(20,20,30,.92);display:grid;place-items:center;padding:16px}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:6px;border:6px solid #fff}
+
+/* modal */
+.modal-back{position:fixed;inset:0;z-index:70;background:rgba(43,45,66,.45);display:flex;align-items:flex-end;justify-content:center}
+.modal{width:100%;max-width:520px;background:var(--paper);border:3px solid var(--ink);border-bottom:0;border-radius:24px 24px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));animation:up .2s ease-out}
+.modal h3{font-family:var(--hand);font-weight:800;font-size:22px;margin:0 0 6px}
+.modal p{margin:0 0 14px;color:var(--ink-soft);line-height:1.6}
+.toggle{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:12px;margin-bottom:16px;cursor:pointer}
+.toggle input{width:22px;height:22px;margin:2px 0 0;accent-color:#2f9e44;flex:none}
+.toggle b{display:block;margin-bottom:2px}
+.toggle small{color:var(--ink-soft);line-height:1.5}
+.modal .row{display:flex;gap:10px;flex-wrap:wrap}
+.modal .row .btn{flex:1;justify-content:center}
+
+/* auth */
+.auth{max-width:420px;margin:8vh auto 0;padding:0 16px}
+.auth .page{padding:26px 22px 24px}
+.auth .page::before{display:none}
+.auth h1{font-family:var(--hand);font-weight:800;font-size:34px;margin:0 0 4px;text-align:center}
+.auth .sub{text-align:center;color:var(--ink-soft);margin:0 0 20px;font-family:var(--hand)}
+.field{display:block;margin-bottom:12px}
+.field span{display:block;font-weight:500;margin-bottom:5px;font-size:15px}
+.field input{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:11px 12px;font:inherit;font-size:16px;background:#fff;direction:ltr;text-align:left}
+.auth .btn{width:100%;justify-content:center;font-size:18px;padding:12px}
+.auth .switch{text-align:center;margin-top:14px;font-size:15px}
+.auth .switch button{background:none;border:0;text-decoration:underline;font-weight:700;padding:0}
+.msg{margin-top:12px;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.5;border:2px solid var(--ink)}
+.msg.err{background:#ffe3e3}.msg.ok{background:#d3f9d8}
+
+.toast{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:500;box-shadow:var(--shadow);white-space:nowrap}
+.spinner{width:22px;height:22px;border:3px solid rgba(43,45,66,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{display:grid;place-items:center;padding:70px 0}
+@media (min-width:640px){ .thumbs .polaroid{width:120px;height:138px} }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<!-- AUTH -->
+<section id="auth" class="auth hidden">
+  <div class="page" style="--c:var(--yellow)">
+    <h1>📔 היומן של גל</h1>
+    <p class="sub" id="authSub">שלום גל! מתחברים ומתחילים לכתוב</p>
+    <form id="authForm">
+      <label class="field"><span>אימייל</span><input id="email" type="email" autocomplete="email" required></label>
+      <label class="field"><span>סיסמה</span><input id="password" type="password" autocomplete="current-password" minlength="6" required></label>
+      <button class="btn primary" id="authBtn" type="submit">כניסה ליומן</button>
+    </form>
+    <div id="authMsg" class="msg hidden"></div>
+    <div class="switch"><span id="switchText">פעם ראשונה כאן?</span> <button id="switchBtn" type="button">פתיחת יומן חדש</button></div>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <header class="top">
+    <div class="brand">
+      <div>
+        <h1><span>היומן של גל</span></h1>
+        <div class="count" id="count"></div>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="menuBtn" aria-label="הגדרות">⚙️</button>
+    </div>
+    <nav class="chips" id="filters"></nav>
+  </header>
+  <main id="feed"></main>
+  <button class="fab" id="newBtn">✏️ לכתוב ביומן</button>
+</div>
+
+<!-- COMPOSER -->
+<section id="composer" class="sheet hidden">
+  <div class="sheet-inner">
+    <div class="sheet-bar">
+      <button class="icon-btn" data-close aria-label="סגירה">✕</button>
+      <div class="title" id="composerTitle">דף חדש</div>
+      <input type="date" class="date-input" id="cDate">
+    </div>
+
+    <div class="section-label">מה כותבים היום?</div>
+    <div class="pick-row" id="cKinds"></div>
+
+    <div class="section-label">איך אני מרגיש?</div>
+    <div class="moods" id="cMoods"></div>
+
+    <div class="page" id="cPage">
+      <div class="head"></div>
+      <input id="cTitle" placeholder="כותרת" maxlength="120">
+      <button class="prompt-btn" id="promptBtn" type="button">🎲 אין לי רעיון, תן לי שאלה</button>
+      <textarea id="cBody" placeholder="פה כותבים..."></textarea>
+    </div>
+
+    <div class="section-label">צבע הדף</div>
+    <div class="colors" id="cColors"></div>
+
+    <div class="section-label">תמונות</div>
+    <div class="photo-actions">
+      <label class="btn">📷 לצלם<input type="file" accept="image/*" capture="environment" id="camInput" hidden></label>
+      <label class="btn">🖼️ מהגלריה<input type="file" accept="image/*" multiple id="galInput" hidden></label>
+    </div>
+    <div class="photo-grid" id="cPhotos"></div>
+
+    <div class="save-row">
+      <button class="btn primary" id="saveBtn">💾 לשמור ביומן</button>
+    </div>
+  </div>
+</section>
+
+<!-- VIEWER -->
+<section id="viewer" class="sheet hidden">
+  <div class="sheet-inner">
+    <div class="sheet-bar">
+      <button class="icon-btn" data-close aria-label="חזרה">→</button>
+      <div class="title"></div>
+      <button class="icon-btn" id="editBtn" aria-label="עריכה">✏️</button>
+    </div>
+    <article class="page" id="vPage"></article>
+    <div class="view-actions">
+      <button class="btn wa" id="shareBtn">📤 לשתף בווצאפ</button>
+    </div>
+    <div class="view-actions">
+      <button class="btn hidden" id="unshareBtn">🔒 לבטל את הקישור</button>
+      <button class="btn danger" id="deleteBtn">🗑️ למחוק</button>
+    </div>
+  </div>
+</section>
+
+<div id="modalRoot"></div>
+
+<script>
+const SB_URL = 'https://mjeupkuecrbkswpvhjvl.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qZXVwa3VlY3Jia3N3cHZoanZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ0ODg1OTMsImV4cCI6MjExMDA2NDU5M30.ZRtNPUjrKInAWH-Wfr21RJ600pxY6K1JltlKnJT0SpU';
+const sb = supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+
+const KINDS = {
+  thought: { label: 'מחשבה', emoji: '💭', color: 'sky' },
+  story:   { label: 'סיפור', emoji: '📖', color: 'lilac' },
+  day:     { label: 'היום שלי', emoji: '☀️', color: 'yellow' },
+  idea:    { label: 'רעיון', emoji: '💡', color: 'orange' },
+};
+const MOODS = ['😄','😊','🤩','😎','🤔','😐','😢','😡','😴'];
+const COLORS = ['yellow','pink','mint','sky','lilac','orange'];
+const PROMPTS = [
+  'מה הדבר הכי מצחיק שקרה לך היום?',
+  'אם היית יכול לטוס לכל מקום בעולם, לאן היית טס?',
+  'ספר על חלום שחלמת.',
+  'מה למדת היום שלא ידעת אתמול?',
+  'מי עשה לך טוב היום, ומה הוא עשה?',
+  'תמציא דמות חדשה ותספר עליה.',
+  'מה היית רוצה להמציא כשתהיה גדול?',
+  'איזה רגע מהיום היית רוצה לזכור לתמיד?',
+  'אם היה לך כוח־על ליום אחד, מה היית עושה איתו?',
+  'מה הדבר הכי טעים שאכלת השבוע?',
+  'ספר על משחק שאתה אוהב, ולמה.',
+  'מה היה קשה לך היום, ואיך התמודדת?',
+  'תכתוב מכתב לגל של עוד עשר שנים.',
+  'מה היית עושה אם היית מנהל בית הספר ליום אחד?',
+];
+
+let user = null, entries = [], filter = 'all';
+let draft = null;          // composer state
+let viewing = null;        // entry being viewed
+let prefetchedFiles = null;
+const urlCache = new Map();
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+const fmtDay = iso => new Date(iso + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const randSlug = () => { const a = new Uint8Array(12); crypto.getRandomValues(a); return Array.from(a, b => 'abcdefghijkmnpqrstuvwxyz23456789'[b % 32]).join(''); };
+
+function toast(text, ms = 2200) {
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = text;
+  document.body.appendChild(t); setTimeout(() => t.remove(), ms);
+}
+
+/* ---------------- AUTH ---------------- */
+let signupMode = false;
+function showAuthMsg(text, ok) { const m = $('#authMsg'); m.textContent = text; m.className = 'msg ' + (ok ? 'ok' : 'err'); }
+$('#switchBtn').onclick = () => {
+  signupMode = !signupMode;
+  $('#authBtn').textContent = signupMode ? 'פתיחת יומן' : 'כניסה ליומן';
+  $('#switchText').textContent = signupMode ? 'כבר יש לך יומן?' : 'פעם ראשונה כאן?';
+  $('#switchBtn').textContent = signupMode ? 'כניסה' : 'פתיחת יומן חדש';
+  $('#authSub').textContent = signupMode ? 'בוחרים אימייל וסיסמה (לפחות 6 תווים)' : 'שלום גל! מתחברים ומתחילים לכתוב';
+  $('#password').autocomplete = signupMode ? 'new-password' : 'current-password';
+  $('#authMsg').classList.add('hidden');
+};
+$('#authForm').onsubmit = async e => {
+  e.preventDefault();
+  const email = $('#email').value.trim(), password = $('#password').value;
+  const btn = $('#authBtn'); btn.disabled = true;
+  try {
+    if (signupMode) {
+      const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
+      if (error) throw error;
+      if (!data.session) showAuthMsg('היומן נפתח! שלחנו מייל לאישור. לוחצים על הקישור במייל וחוזרים לכאן להתחבר.', true);
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+    }
+  } catch (err) {
+    const m = String(err.message || err);
+    showAuthMsg(/Invalid login/i.test(m) ? 'האימייל או הסיסמה לא נכונים.' :
+                /not confirmed/i.test(m) ? 'צריך קודם לאשר את המייל (בדקו בתיבת הדואר).' :
+                /already registered/i.test(m) ? 'כבר יש יומן עם האימייל הזה. אפשר פשוט להתחבר.' : 'משהו השתבש: ' + m, false);
+  } finally { btn.disabled = false; }
+};
+
+sb.auth.onAuthStateChange((_ev, session) => {
+  const u = session?.user || null;
+  if (u?.id === user?.id) return;
+  user = u;
+  if (user) { $('#auth').classList.add('hidden'); $('#app').classList.remove('hidden'); loadEntries(); }
+  else { $('#app').classList.add('hidden'); $('#auth').classList.remove('hidden'); closeSheets(); }
+});
+
+/* ---------------- DATA ---------------- */
+async function loadEntries() {
+  $('#feed').innerHTML = '<div class="loading"><span class="spinner"></span></div>';
+  const { data, error } = await sb.from('entries').select('*').order('entry_date', { ascending: false }).order('created_at', { ascending: false });
+  if (error) { $('#feed').innerHTML = `<div class="empty"><div class="big">😕</div><h2>לא הצלחתי לטעון את היומן</h2><p>${esc(error.message)}</p></div>`; return; }
+  entries = data;
+  await signUrls(entries.flatMap(e => e.photos.slice(0, 3)));
+  renderFeed();
+  route();
+}
+
+async function signUrls(paths) {
+  const now = Date.now();
+  const need = [...new Set(paths)].filter(p => !(urlCache.get(p)?.exp > now + 60000));
+  if (!need.length) return;
+  const { data } = await sb.storage.from('photos').createSignedUrls(need, 3600 * 6);
+  (data || []).forEach(r => { if (r.signedUrl) urlCache.set(r.path, { url: r.signedUrl, exp: now + 3600 * 6 * 1000 }); });
+}
+const photoUrl = p => urlCache.get(p)?.url || '';
+
+async function compress(file) {
+  const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => null);
+  if (!bmp) return file;
+  const max = 1600, s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return await new Promise(r => c.toBlob(r, 'image/jpeg', 0.82));
+}
+
+/* ---------------- FEED ---------------- */
+function renderFilters() {
+  const items = [['all', '📔 הכול'], ...Object.entries(KINDS).map(([k, v]) => [k, v.emoji + ' ' + v.label])];
+  $('#filters').innerHTML = items.map(([k, l]) => `<button class="chip ${filter === k ? 'on' : ''}" data-f="${k}">${l}</button>`).join('');
+  $('#filters').querySelectorAll('.chip').forEach(b => b.onclick = () => { filter = b.dataset.f; renderFeed(); });
+}
+
+function renderFeed() {
+  renderFilters();
+  const n = entries.length;
+  $('#count').textContent = n === 0 ? 'עוד אין דפים' : n === 1 ? 'דף אחד ביומן' : `${n} דפים ביומן`;
+  const list = filter === 'all' ? entries : entries.filter(e => e.kind === filter);
+  if (!list.length) {
+    $('#feed').innerHTML = `<div class="empty"><div class="big">${filter === 'all' ? '✨' : KINDS[filter].emoji}</div>
+      <h2>${filter === 'all' ? 'היומן מחכה לך' : 'עוד אין כאן כלום'}</h2>
+      <p>${filter === 'all' ? 'לוחצים על "לכתוב ביומן" ומתחילים את הדף הראשון' : 'אולי זה הזמן לכתוב אחד?'}</p></div>`;
+    return;
+  }
+  let html = '', lastDay = '';
+  for (const e of list) {
+    if (e.entry_date !== lastDay) { html += `<div class="day-label">${fmtDay(e.entry_date)}</div>`; lastDay = e.entry_date; }
+    const k = KINDS[e.kind] || KINDS.thought;
+    const thumbs = e.photos.slice(0, 3).map(p => `<div class="polaroid"><img loading="lazy" src="${photoUrl(p)}" alt=""></div>`).join('')
+      + (e.photos.length > 3 ? `<div class="polaroid more">+${e.photos.length - 3}</div>` : '');
+    html += `<article class="card" style="--c:var(--${e.color})" data-id="${e.id}">
+      <div class="tape"></div>
+      ${e.mood ? `<div class="mood">${e.mood}</div>` : ''}
+      <div class="meta"><span class="badge">${k.emoji} ${k.label}</span>${e.is_public ? '<span class="shared-dot">🔗 משותף</span>' : ''}</div>
+      ${e.title ? `<h2>${esc(e.title)}</h2>` : ''}
+      ${e.body ? `<p class="excerpt">${esc(e.body)}</p>` : ''}
+      ${thumbs ? `<div class="thumbs">${thumbs}</div>` : ''}
+    </article>`;
+  }
+  $('#feed').innerHTML = html;
+  $('#feed').querySelectorAll('.card').forEach(c => c.onclick = () => go('#/e/' + c.dataset.id));
+}
+
+/* ---------------- ROUTER ---------------- */
+function go(hash) { if (location.hash === hash) route(); else location.hash = hash; }
+function closeSheets() { $('#composer').classList.add('hidden'); $('#viewer').classList.add('hidden'); document.body.style.overflow = ''; }
+function route() {
+  if (!user) return;
+  const h = location.hash;
+  closeSheets();
+  let m;
+  if (h === '#/new') openComposer(null);
+  else if ((m = h.match(/^#\/edit\/(.+)$/))) { const e = entries.find(x => x.id === m[1]); e ? openComposer(e) : go('#/'); }
+  else if ((m = h.match(/^#\/e\/(.+)$/))) { const e = entries.find(x => x.id === m[1]); e ? openViewer(e) : go('#/'); }
+}
+window.addEventListener('hashchange', route);
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => history.length > 1 ? history.back() : go('#/'));
+$('#newBtn').onclick = () => go('#/new');
+
+/* ---------------- COMPOSER ---------------- */
+function openComposer(entry) {
+  draft = entry ? {
+    id: entry.id, kind: entry.kind, mood: entry.mood, color: entry.color, date: entry.entry_date,
+    title: entry.title, body: entry.body, photos: entry.photos.map(p => ({ path: p })),
+  } : { id: null, kind: 'day', mood: null, color: 'yellow', date: todayISO(), title: '', body: '', photos: [] };
+  $('#composerTitle').textContent = entry ? 'עריכת דף' : 'דף חדש';
+  $('#cDate').value = draft.date;
+  $('#cTitle').value = draft.title;
+  $('#cBody').value = draft.body;
+  $('#cBody').placeholder = 'פה כותבים...';
+  renderComposer();
+  $('#composer').classList.remove('hidden'); $('#composer').scrollTop = 0; document.body.style.overflow = 'hidden';
+  if (entry) signUrls(entry.photos).then(renderPhotos);
+}
+function renderComposer() {
+  $('#cKinds').innerHTML = Object.entries(KINDS).map(([k, v]) =>
+    `<button class="pick ${draft.kind === k ? 'on' : ''}" style="--c:var(--${v.color})" data-k="${k}">${v.emoji} ${v.label}</button>`).join('');
+  $('#cKinds').querySelectorAll('.pick').forEach(b => b.onclick = () => {
+    const was = KINDS[draft.kind].color;
+    draft.kind = b.dataset.k;
+    if (draft.color === was) draft.color = KINDS[draft.kind].color;
+    renderComposer();
+  });
+  $('#cMoods').innerHTML = MOODS.map(m => `<button class="${draft.mood === m ? 'on' : ''}" data-m="${m}">${m}</button>`).join('');
+  $('#cMoods').querySelectorAll('button').forEach(b => b.onclick = () => { draft.mood = draft.mood === b.dataset.m ? null : b.dataset.m; renderComposer(); });
+  $('#cColors').innerHTML = COLORS.map(c => `<button class="${draft.color === c ? 'on' : ''}" style="--c:var(--${c})" data-c="${c}" aria-label="${c}"></button>`).join('');
+  $('#cColors').querySelectorAll('button').forEach(b => b.onclick = () => { draft.color = b.dataset.c; renderComposer(); });
+  $('#cPage').style.setProperty('--c', `var(--${draft.color})`);
+  renderPhotos();
+}
+function renderPhotos() {
+  if (!draft) return;
+  $('#cPhotos').innerHTML = draft.photos.map((p, i) =>
+    `<div class="polaroid"><img src="${p.preview || photoUrl(p.path)}" alt=""><button class="x" data-i="${i}" aria-label="הסרה">✕</button></div>`).join('');
+  $('#cPhotos').querySelectorAll('.x').forEach(b => b.onclick = () => {
+    const p = draft.photos[+b.dataset.i]; if (p.preview) URL.revokeObjectURL(p.preview);
+    draft.photos.splice(+b.dataset.i, 1); renderPhotos();
+  });
+}
+async function addFiles(files) {
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) continue;
+    const blob = await compress(f);
+    draft.photos.push({ blob, preview: URL.createObjectURL(blob) });
+  }
+  renderPhotos();
+}
+$('#camInput').onchange = e => { addFiles([...e.target.files]); e.target.value = ''; };
+$('#galInput').onchange = e => { addFiles([...e.target.files]); e.target.value = ''; };
+$('#promptBtn').onclick = () => {
+  const p = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+  if (!$('#cTitle').value.trim()) $('#cTitle').value = p;
+  else $('#cBody').placeholder = p;
+  $('#cBody').focus();
+};
+$('#cBody').addEventListener('input', e => { e.target.style.height = 'auto'; e.target.style.height = Math.max(340, e.target.scrollHeight) + 'px'; });
+
+$('#saveBtn').onclick = async () => {
+  const title = $('#cTitle').value.trim(), body = $('#cBody').value.trim();
+  if (!title && !body && !draft.photos.length) { toast('הדף עדיין ריק 🙂'); return; }
+  const btn = $('#saveBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> שומר...';
+  try {
+    const paths = [];
+    for (const p of draft.photos) {
+      if (p.path) { paths.push(p.path); continue; }
+      const path = `${user.id}/${crypto.randomUUID()}.jpg`;
+      const { error } = await sb.storage.from('photos').upload(path, p.blob, { contentType: 'image/jpeg' });
+      if (error) throw error;
+      urlCache.set(path, { url: p.preview, exp: Date.now() + 3600e3 });
+      paths.push(path);
+    }
+    const row = { kind: draft.kind, mood: draft.mood, color: draft.color, entry_date: $('#cDate').value || todayISO(), title, body, photos: paths };
+    let saved, removed = [];
+    if (draft.id) {
+      const old = entries.find(e => e.id === draft.id);
+      removed = (old?.photos || []).filter(p => !paths.includes(p));
+      const { data, error } = await sb.from('entries').update(row).eq('id', draft.id).select().single();
+      if (error) throw error; saved = data;
+      entries = entries.map(e => e.id === saved.id ? saved : e);
+    } else {
+      const { data, error } = await sb.from('entries').insert(row).select().single();
+      if (error) throw error; saved = data;
+      entries.unshift(saved);
+    }
+    if (removed.length) sb.storage.from('photos').remove(removed);
+    entries.sort((a, b) => b.entry_date.localeCompare(a.entry_date) || b.created_at.localeCompare(a.created_at));
+    draft = null;
+    renderFeed();
+    toast('נשמר ביומן ✨');
+    history.replaceState(null, '', '#/e/' + saved.id); route();
+  } catch (err) {
+    toast('השמירה לא הצליחה: ' + (err.message || err), 4000);
+  } finally { btn.disabled = false; btn.innerHTML = '💾 לשמור ביומן'; }
+};
+
+/* ---------------- VIEWER ---------------- */
+async function openViewer(e) {
+  viewing = e; prefetchedFiles = null;
+  await signUrls(e.photos);
+  const k = KINDS[e.kind] || KINDS.thought;
+  $('#vPage').style.setProperty('--c', `var(--${e.color})`);
+  $('#vPage').innerHTML = `<div class="head"></div><div class="view-page">
+    ${e.mood ? `<div class="big-mood">${e.mood}</div>` : ''}
+    <div class="when"><span class="badge">${k.emoji} ${k.label}</span> ${fmtDay(e.entry_date)}</div>
+    ${e.title ? `<h2>${esc(e.title)}</h2>` : ''}
+    ${e.body ? `<div class="body">${esc(e.body)}</div>` : ''}
+    ${e.photos.length ? `<div class="gallery">${e.photos.map(p => `<div class="polaroid"><img src="${photoUrl(p)}" alt=""></div>`).join('')}</div>` : ''}
+  </div>`;
+  $('#vPage').querySelectorAll('.gallery img').forEach(img => img.onclick = () => {
+    const lb = document.createElement('div'); lb.className = 'lightbox'; lb.innerHTML = `<img src="${img.src}" alt="">`;
+    lb.onclick = () => lb.remove(); document.body.appendChild(lb);
+  });
+  $('#unshareBtn').classList.toggle('hidden', !e.is_public);
+  $('#viewer').classList.remove('hidden'); $('#viewer').scrollTop = 0; document.body.style.overflow = 'hidden';
+  // prepare photo files ahead of time so the share sheet opens instantly
+  if (e.photos.length) {
+    Promise.all(e.photos.map(async (p, i) => {
+      const b = await (await fetch(photoUrl(p))).blob();
+      return new File([b], `gal-${i + 1}.jpg`, { type: 'image/jpeg' });
+    })).then(f => { if (viewing === e) prefetchedFiles = f; }).catch(() => {});
+  }
+}
+$('#editBtn').onclick = () => go('#/edit/' + viewing.id);
+
+$('#deleteBtn').onclick = () => modal(`
+  <h3>למחוק את הדף?</h3><p>אי אפשר להחזיר אותו אחרי המחיקה.</p>
+  <div class="row"><button class="btn" data-x>לא, להשאיר</button><button class="btn danger" id="reallyDel">🗑️ כן, למחוק</button></div>`,
+  m => m.querySelector('#reallyDel').onclick = async () => {
+    const e = viewing;
+    const { error } = await sb.from('entries').delete().eq('id', e.id);
+    if (error) { toast('המחיקה לא הצליחה'); return; }
+    if (e.photos.length) sb.storage.from('photos').remove(e.photos);
+    entries = entries.filter(x => x.id !== e.id);
+    closeModal(); renderFeed(); go('#/'); toast('הדף נמחק');
+  });
+
+$('#unshareBtn').onclick = async () => {
+  const { data, error } = await sb.from('entries').update({ is_public: false }).eq('id', viewing.id).select().single();
+  if (error) { toast('לא הצלחתי לבטל'); return; }
+  entries = entries.map(x => x.id === data.id ? data : x); viewing = data;
+  $('#unshareBtn').classList.add('hidden'); renderFeed(); toast('הקישור בוטל. רק אתה רואה את הדף 🔒');
+};
+
+$('#shareBtn').onclick = () => {
+  const e = viewing;
+  modal(`
+    <h3>📤 שיתוף בווצאפ</h3>
+    <p>הטקסט${e.photos.length ? ' והתמונות' : ''} יישלחו למי שתבחר.</p>
+    <label class="toggle"><input type="checkbox" id="withLink" checked>
+      <span><b>להוסיף קישור לדף יפה</b><small>מי שמקבל את הקישור יוכל לראות את הדף הזה (רק אותו, לא את כל היומן).</small></span></label>
+    <div class="row"><button class="btn" data-x>ביטול</button><button class="btn wa" id="goShare">לשתף</button></div>`,
+    m => m.querySelector('#goShare').onclick = () => doShare(e, m.querySelector('#withLink').checked));
+};
+
+async function doShare(e, withLink) {
+  let link = '';
+  if (withLink) {
+    const slug = e.share_slug || randSlug();
+    link = new URL('post.html?s=' + slug, location.href).href;
+    if (!e.is_public || e.share_slug !== slug) {
+      sb.from('entries').update({ is_public: true, share_slug: slug }).eq('id', e.id).select().single().then(({ data }) => {
+        if (data) { entries = entries.map(x => x.id === data.id ? data : x); if (viewing?.id === data.id) viewing = data; $('#unshareBtn').classList.remove('hidden'); renderFeed(); }
+      });
+      e.share_slug = slug; e.is_public = true;
+    }
+  }
+  const k = KINDS[e.kind] || KINDS.thought;
+  let body = e.body || '';
+  if (link && body.length > 700) body = body.slice(0, 700).trim() + '...';
+  const text = [e.title ? `${k.emoji} *${e.title}*` : k.emoji, body, link ? `📔 מהיומן של גל: ${link}` : ''].filter(Boolean).join('\n\n');
+  closeModal();
+  const files = prefetchedFiles || [];
+  try {
+    if (files.length && navigator.canShare?.({ files })) await navigator.share({ files, text });
+    else if (navigator.share) await navigator.share({ text });
+    else window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  } catch (err) {
+    if (err.name !== 'AbortError') window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
+}
+
+/* ---------------- MODAL ---------------- */
+function modal(html, init) {
+  $('#modalRoot').innerHTML = `<div class="modal-back"><div class="modal">${html}</div></div>`;
+  const back = $('#modalRoot .modal-back');
+  back.onclick = ev => { if (ev.target === back) closeModal(); };
+  back.querySelectorAll('[data-x]').forEach(b => b.onclick = closeModal);
+  init?.(back);
+}
+function closeModal() { $('#modalRoot').innerHTML = ''; }
+
+$('#menuBtn').onclick = () => modal(`
+  <h3>⚙️ הגדרות</h3><p>מחובר בתור <b dir="ltr">${esc(user?.email)}</b></p>
+  <div class="row"><button class="btn" data-x>סגירה</button><button class="btn danger" id="logout">יציאה מהיומן</button></div>`,
+  m => m.querySelector('#logout').onclick = async () => { closeModal(); await sb.auth.signOut(); });
+
+/* ---------------- BOOT ---------------- */
+sb.auth.getSession().then(({ data }) => { if (!data.session) $('#auth').classList.remove('hidden'); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>

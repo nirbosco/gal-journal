@@ -1,0 +1,16 @@
+{
+  "name": "היומן של גל",
+  "short_name": "היומן שלי",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "he",
+  "background_color": "#fff3bf",
+  "theme_color": "#ffd43b",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
