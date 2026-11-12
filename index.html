@@ -697,6 +697,17 @@ async function doShare(e, withLink) {
   if (link && body.length > 700) body = body.slice(0, 700).trim() + '...';
   const text = [e.title ? `${k.emoji} *${e.title}*` : k.emoji, body, link ? `📔 מהיומן של גל: ${link}` : ''].filter(Boolean).join('\n\n');
   closeModal();
+  if (window.GalApp) {            // inside the Android app (no Chrome): hand off to native share
+    toast('מכין את השיתוף...');
+    try {
+      const blobs = prefetchedFiles || await Promise.all(e.photos.map(async p => (await fetch(photoUrl(p))).blob()));
+      const images = await Promise.all(blobs.map(b => new Promise((res, rej) => {
+        const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(b);
+      })));
+      window.GalApp.share(JSON.stringify({ text, images }));
+    } catch { window.GalApp.share(JSON.stringify({ text, images: [] })); }
+    return;
+  }
   const files = prefetchedFiles || [];
   try {
     if (files.length && navigator.canShare?.({ files })) await navigator.share({ files, text });
