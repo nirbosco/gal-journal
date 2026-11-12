@@ -531,6 +531,8 @@ function openComposer(entry) {
     id: entry.id, kind: entry.kind, mood: entry.mood, color: entry.color, date: entry.entry_date,
     title: entry.title, body: entry.body, photos: entry.photos.map(p => ({ path: p })),
   } : { id: null, kind: 'day', mood: null, color: 'yellow', date: todayISO(), title: '', body: '', photos: [] };
+  const kept = loadDraftLocal(draft.id);
+  if (kept) Object.assign(draft, { kind: kept.kind, mood: kept.mood, color: kept.color, date: kept.date || draft.date, title: kept.title, body: kept.body });
   $('#composerTitle').textContent = entry ? 'עריכת דף' : 'דף חדש';
   $('#cDate').value = draft.date;
   $('#cTitle').value = draft.title;
@@ -539,6 +541,34 @@ function openComposer(entry) {
   renderComposer();
   $('#composer').classList.remove('hidden'); $('#composer').scrollTop = 0; document.body.style.overflow = 'hidden';
   if (entry) signUrls(entry.photos).then(renderPhotos);
+  pickupPendingPhotos();
+}
+
+/* Draft autosave: nothing typed is lost if the app closes (e.g. while the camera is open). */
+const DRAFT_KEY = 'gal-journal-draft';
+function saveDraftLocal() {
+  if (!draft) return;
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ id: draft.id, kind: draft.kind, mood: draft.mood, color: draft.color,
+    date: $('#cDate').value, title: $('#cTitle').value, body: $('#cBody').value })); } catch {}
+}
+function loadDraftLocal(id) {
+  try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); return d && d.id === id ? d : null; } catch { return null; }
+}
+function clearDraftLocal() { try { localStorage.removeItem(DRAFT_KEY); } catch {} }
+['#cTitle', '#cBody', '#cDate'].forEach(s => $(s).addEventListener('input', saveDraftLocal));
+
+/* Android app only: photos taken while the app was closed in the background come back here. */
+function pickupPendingPhotos() {
+  if (!draft || !window.GalApp?.takePendingPhotos) return;
+  let arr = [];
+  try { arr = JSON.parse(window.GalApp.takePendingPhotos()); } catch {}
+  if (!arr.length) return;
+  addFiles(arr.map((b64, i) => {
+    const bin = atob(b64), u = new Uint8Array(bin.length);
+    for (let j = 0; j < bin.length; j++) u[j] = bin.charCodeAt(j);
+    return new File([u], `photo-${i + 1}.jpg`, { type: 'image/jpeg' });
+  }));
+  toast('התמונה חזרה ליומן 📷');
 }
 function renderComposer() {
   $('#cKinds').innerHTML = Object.entries(KINDS).map(([k, v]) =>
@@ -555,6 +585,7 @@ function renderComposer() {
   $('#cColors').querySelectorAll('button').forEach(b => b.onclick = () => { draft.color = b.dataset.c; renderComposer(); });
   $('#cPage').style.setProperty('--c', `var(--${draft.color})`);
   renderPhotos();
+  saveDraftLocal();
 }
 function renderPhotos() {
   if (!draft) return;
@@ -613,6 +644,7 @@ $('#saveBtn').onclick = async () => {
     if (removed.length) sb.storage.from('photos').remove(removed);
     entries.sort((a, b) => b.entry_date.localeCompare(a.entry_date) || b.created_at.localeCompare(a.created_at));
     draft = null;
+    clearDraftLocal();
     renderFeed();
     toast('נשמר ביומן ✨');
     history.replaceState(null, '', '#/e/' + saved.id); route();
