@@ -178,6 +178,44 @@ main{max-width:720px;margin:0 auto;padding:6px 16px}
 .loading{display:grid;place-items:center;padding:70px 0}
 @media (min-width:640px){ .thumbs .polaroid{width:120px;height:138px} }
 
+/* story pages (book) */
+.spage{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;box-shadow:var(--shadow);margin-top:16px;overflow:hidden}
+.spage::before{content:"";position:absolute;top:0;bottom:0;right:44px;width:2px;background:var(--margin);opacity:.8}
+.spage .shead{display:flex;align-items:center;justify-content:space-between;padding:8px 58px 2px 12px;font-family:var(--hand);font-weight:700;color:var(--ink-soft);background:linear-gradient(var(--c,var(--lilac)),var(--c,var(--lilac))) top/100% 8px no-repeat;padding-top:14px}
+.spage .shead button{background:none;border:0;font-size:17px;padding:2px 6px}
+.spage .pic{position:relative;margin:8px 58px 4px 18px}
+.spage .pic img{width:100%;max-height:230px;object-fit:cover;border:2px solid var(--ink);border-radius:6px;display:block;background:#eee}
+.spage .pic .x{position:absolute;top:-10px;left:-10px;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;font-weight:800;display:grid;place-items:center;padding:0;font-size:14px}
+.spage .pic-actions{display:flex;gap:6px;flex-wrap:wrap;margin:8px 58px 2px 18px}
+.btn.mini{font-size:13px;padding:5px 10px;border-width:2px;box-shadow:0 2px 0 var(--ink);border-radius:10px}
+.spage textarea{width:100%;border:0;background:transparent;font-family:var(--hand);color:var(--ink);outline:none;padding:2px 58px 16px 18px;font-size:18px;line-height:34px;min-height:170px;resize:none;
+  background-image:linear-gradient(transparent 33px,var(--line) 33px,var(--line) 34px);background-size:100% 34px;background-attachment:local}
+.spage .fill{font-size:13px;color:#d9480f;font-weight:500;padding:0 58px 10px 18px}
+.next-page-btn{display:flex;margin:16px auto 0;font-size:17px;background:var(--lilac)}
+.btn.book{background:var(--lilac);font-size:18px;padding:11px 22px}
+.vp-num{font-family:var(--hand);font-weight:700;color:var(--ink-soft);margin:22px 0 6px;font-size:15px;display:flex;align-items:center;gap:8px}
+.vp-num::after{content:"";flex:1;border-top:2px dashed var(--line)}
+.vp-img{display:block;width:100%;max-height:340px;object-fit:cover;border:2px solid var(--ink);border-radius:6px;margin:6px 0;cursor:zoom-in}
+.page-count{font-size:12px;color:var(--ink-soft);font-weight:500}
+
+/* AI drawing */
+.modal{max-height:92vh;overflow-y:auto}
+.ai-text{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:10px;font-family:var(--hand);font-size:16px;min-height:76px;resize:vertical;background:#fff;color:var(--ink);margin-bottom:10px}
+.styles{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
+.styles::-webkit-scrollbar{display:none}
+.styles .pick{flex:none;font-size:13px;padding:5px 9px;border-width:2px}
+.ai-result img{width:100%;border-radius:10px;border:2.5px solid var(--ink);display:block;margin:4px 0 10px}
+.ai-loading{text-align:center;padding:22px 0;font-family:var(--hand);font-size:17px}
+.ai-loading .brush{font-size:40px;display:inline-block;animation:wiggle 1s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+.quota{display:block;text-align:center;color:var(--ink-soft);font-size:13px;margin-top:10px}
+.ai-err{background:#fff4e6;border:2px solid var(--ink);border-radius:12px;padding:10px;margin-bottom:10px;line-height:1.5}
+.admin{border-top:2px dashed var(--line);margin-top:14px;padding-top:12px}
+.admin b{display:block;margin-bottom:4px}
+.admin small{display:block;color:var(--ink-soft);margin-bottom:8px;line-height:1.5}
+.admin input{width:100%;border:2.5px solid var(--ink);border-radius:12px;padding:9px 10px;font:inherit;background:#fff;margin-bottom:8px;direction:ltr}
+.admin .log{font-size:13px;color:var(--ink-soft);margin:8px 0 0;padding-right:18px;line-height:1.6}
+
 /* keypad phones (Qin F25 etc.): visible focus for D-pad navigation */
 :focus-visible{outline:3px solid var(--accent-2);outline-offset:3px}
 .card:focus-visible{outline:4px solid var(--accent-2);outline-offset:4px}
@@ -255,9 +293,21 @@ main{max-width:720px;margin:0 auto;padding:6px 16px}
   .auth .btn{font-size:16px;padding:9px}
   .auth .switch{font-size:13px;margin-top:10px}
   .toast{bottom:calc(64px + env(safe-area-inset-bottom));font-size:13px;padding:8px 14px}
+  .spage{margin-top:12px;border-radius:14px;border-width:2px}
+  .spage::before{right:26px}
+  .spage .shead{padding:12px 36px 0 8px;font-size:14px}
+  .spage .pic,.spage .pic-actions{margin-right:36px;margin-left:10px}
+  .spage .pic img{max-height:170px}
+  .spage textarea{padding:2px 36px 12px 10px;font-size:16px;line-height:30px;min-height:150px;background-image:linear-gradient(transparent 29px,var(--line) 29px,var(--line) 30px);background-size:100% 30px}
+  .spage .fill{padding:0 36px 8px 10px;font-size:12px}
+  .btn.mini{font-size:12px;padding:4px 8px}
+  .next-page-btn{font-size:15px}
+  .btn.book{font-size:16px;padding:9px 16px}
+  .ai-text{font-size:15px;min-height:64px}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="book.js"></script>
 </head>
 <body>
 
@@ -315,15 +365,25 @@ main{max-width:720px;margin:0 auto;padding:6px 16px}
       <textarea id="cBody" placeholder="פה כותבים..."></textarea>
     </div>
 
+    <div id="storyBox" class="hidden">
+      <div id="sPages"></div>
+      <button class="btn next-page-btn" id="addPageBtn" type="button">📄 לעבור לעמוד הבא</button>
+    </div>
+
     <div class="section-label">צבע הדף</div>
     <div class="colors" id="cColors"></div>
 
-    <div class="section-label">תמונות</div>
-    <div class="photo-actions">
-      <label class="btn">📷 לצלם<input type="file" accept="image/*" capture="environment" id="camInput" hidden></label>
-      <label class="btn">🖼️ מהגלריה<input type="file" accept="image/*" multiple id="galInput" hidden></label>
+    <input type="file" accept="image/*" capture="environment" id="camInput" hidden>
+    <input type="file" accept="image/*" multiple id="galInput" hidden>
+    <div id="photoSection">
+      <div class="section-label">תמונות</div>
+      <div class="photo-actions">
+        <button class="btn" type="button" id="camBtn">📷 לצלם</button>
+        <button class="btn" type="button" id="galBtn">🖼️ מהגלריה</button>
+        <button class="btn" type="button" id="aiBtn">✨ ציור AI</button>
+      </div>
+      <div class="photo-grid" id="cPhotos"></div>
     </div>
-    <div class="photo-grid" id="cPhotos"></div>
 
     <div class="save-row">
       <button class="btn primary" id="saveBtn">💾 לשמור ביומן</button>
@@ -340,6 +400,7 @@ main{max-width:720px;margin:0 auto;padding:6px 16px}
       <button class="icon-btn" id="editBtn" aria-label="עריכה">✏️</button>
     </div>
     <article class="page" id="vPage"></article>
+    <div class="view-actions hidden" id="bookRow"><button class="btn book" id="readBookBtn">📖 לקרוא כספר</button></div>
     <div class="view-actions">
       <button class="btn wa" id="shareBtn">📤 לשתף בווצאפ</button>
     </div>
@@ -499,7 +560,7 @@ function renderFeed() {
     html += `<article class="card" tabindex="0" role="button" style="--c:var(--${e.color})" data-id="${e.id}">
       <div class="tape"></div>
       ${e.mood ? `<div class="mood">${e.mood}</div>` : ''}
-      <div class="meta"><span class="badge">${k.emoji} ${k.label}</span>${e.is_public ? '<span class="shared-dot">🔗 משותף</span>' : ''}</div>
+      <div class="meta"><span class="badge">${k.emoji} ${k.label}</span>${e.pages?.length > 1 ? `<span class="page-count">📄 ${e.pages.length} עמודים</span>` : ''}${e.is_public ? '<span class="shared-dot">🔗 משותף</span>' : ''}</div>
       ${e.title ? `<h2>${esc(e.title)}</h2>` : ''}
       ${e.body ? `<p class="excerpt">${esc(e.body)}</p>` : ''}
       ${thumbs ? `<div class="thumbs">${thumbs}</div>` : ''}
@@ -532,18 +593,23 @@ $('#newBtn').onclick = () => go('#/new');
 function openComposer(entry) {
   draft = entry ? {
     id: entry.id, kind: entry.kind, mood: entry.mood, color: entry.color, date: entry.entry_date,
-    title: entry.title, body: entry.body, photos: entry.photos.map(p => ({ path: p })),
-  } : { id: null, kind: 'day', mood: null, color: 'yellow', date: todayISO(), title: '', body: '', photos: [] };
+    title: entry.title, body: entry.body, photos: entry.pages ? [] : entry.photos.map(p => ({ path: p })),
+    pages: entry.pages ? entry.pages.map(pg => ({ text: pg.text || '', photo: pg.photo ? { path: pg.photo } : null })) : null,
+  } : { id: null, kind: 'day', mood: null, color: 'yellow', date: todayISO(), title: '', body: '', photos: [], pages: null };
   const kept = loadDraftLocal(draft.id);
-  if (kept) Object.assign(draft, { kind: kept.kind, mood: kept.mood, color: kept.color, date: kept.date || draft.date, title: kept.title, body: kept.body });
+  if (kept) {
+    Object.assign(draft, { kind: kept.kind, mood: kept.mood, color: kept.color, date: kept.date || draft.date, title: kept.title, body: kept.body });
+    if (kept.pages) draft.pages = kept.pages.map((pg, i) => ({ text: pg.text || '', photo: pg.path ? { path: pg.path } : (draft.pages?.[i]?.photo?.path ? draft.pages[i].photo : null) }));
+  }
   $('#composerTitle').textContent = entry ? 'עריכת דף' : 'דף חדש';
   $('#cDate').value = draft.date;
   $('#cTitle').value = draft.title;
   $('#cBody').value = draft.body;
   $('#cBody').placeholder = 'פה כותבים...';
+  if (draft.kind === 'story' && !draft.pages) toStory();
   renderComposer();
   $('#composer').classList.remove('hidden'); $('#composer').scrollTop = 0; document.body.style.overflow = 'hidden';
-  if (entry) signUrls(entry.photos).then(renderPhotos);
+  if (entry) signUrls(entry.photos).then(() => { renderPhotos(); renderPages(); });
   pickupPendingPhotos();
 }
 
@@ -552,7 +618,8 @@ const DRAFT_KEY = 'gal-journal-draft';
 function saveDraftLocal() {
   if (!draft) return;
   try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ id: draft.id, kind: draft.kind, mood: draft.mood, color: draft.color,
-    date: $('#cDate').value, title: $('#cTitle').value, body: $('#cBody').value })); } catch {}
+    date: $('#cDate').value, title: $('#cTitle').value, body: $('#cBody').value,
+    pages: draft.pages ? draft.pages.map(pg => ({ text: pg.text, path: pg.photo?.path || null })) : null })); } catch {}
 }
 function loadDraftLocal(id) {
   try { const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); return d && d.id === id ? d : null; } catch { return null; }
@@ -566,11 +633,8 @@ function pickupPendingPhotos() {
   let arr = [];
   try { arr = JSON.parse(window.GalApp.takePendingPhotos()); } catch {}
   if (!arr.length) return;
-  addFiles(arr.map((b64, i) => {
-    const bin = atob(b64), u = new Uint8Array(bin.length);
-    for (let j = 0; j < bin.length; j++) u[j] = bin.charCodeAt(j);
-    return new File([u], `photo-${i + 1}.jpg`, { type: 'image/jpeg' });
-  }));
+  photoTarget = null;
+  handleIncoming(arr.map((b64, i) => b64ToFile(b64, `photo-${i + 1}.jpg`, 'image/jpeg')));
   toast('התמונה חזרה ליומן 📷');
 }
 function renderComposer() {
@@ -579,6 +643,7 @@ function renderComposer() {
   $('#cKinds').querySelectorAll('.pick').forEach(b => b.onclick = () => {
     const was = KINDS[draft.kind].color;
     draft.kind = b.dataset.k;
+    if (draft.kind === 'story') toStory(); else fromStory();
     if (draft.color === was) draft.color = KINDS[draft.kind].color;
     renderComposer();
   });
@@ -587,7 +652,13 @@ function renderComposer() {
   $('#cColors').innerHTML = COLORS.map(c => `<button class="${draft.color === c ? 'on' : ''}" style="--c:var(--${c})" data-c="${c}" aria-label="${c}"></button>`).join('');
   $('#cColors').querySelectorAll('button').forEach(b => b.onclick = () => { draft.color = b.dataset.c; renderComposer(); });
   $('#cPage').style.setProperty('--c', `var(--${draft.color})`);
+  const story = isStory();
+  $('#cBody').classList.toggle('hidden', story);
+  $('#storyBox').classList.toggle('hidden', !story);
+  $('#photoSection').classList.toggle('hidden', story);
+  $('#cTitle').placeholder = story ? 'איך קוראים לסיפור?' : 'כותרת';
   renderPhotos();
+  renderPages();
   saveDraftLocal();
 }
 function renderPhotos() {
@@ -607,8 +678,102 @@ async function addFiles(files) {
   }
   renderPhotos();
 }
-$('#camInput').onchange = e => { addFiles([...e.target.files]); e.target.value = ''; };
-$('#galInput').onchange = e => { addFiles([...e.target.files]); e.target.value = ''; };
+$('#camInput').onchange = e => { handleIncoming([...e.target.files]); e.target.value = ''; };
+$('#galInput').onchange = e => { handleIncoming([...e.target.files]); e.target.value = ''; };
+$('#camBtn').onclick = () => { photoTarget = null; $('#camInput').click(); };
+$('#galBtn').onclick = () => { photoTarget = null; $('#galInput').click(); };
+$('#aiBtn').onclick = () => openAi(file => addFiles([file]));
+
+/* ---------------- STORY PAGES ---------------- */
+let photoTarget = null;               // null = general photos, number = story page index
+const isStory = () => draft?.kind === 'story';
+const FULL_PAGE = 380;                // characters that roughly fill a book page on a small phone
+
+function toStory() {
+  if (draft.pages) return;
+  const ph = draft.photos;
+  draft.pages = [{ text: $('#cBody').value, photo: ph[0] || null }, ...ph.slice(1).map(p => ({ text: '', photo: p }))];
+  draft.photos = [];
+}
+function fromStory() {
+  if (!draft.pages) return;
+  $('#cBody').value = draft.pages.map(p => p.text.trim()).filter(Boolean).join('\n\n');
+  draft.photos = draft.pages.map(p => p.photo).filter(Boolean);
+  draft.pages = null;
+}
+function b64ToFile(b64, name, type) {
+  const bin = atob(b64), u = new Uint8Array(bin.length);
+  for (let j = 0; j < bin.length; j++) u[j] = bin.charCodeAt(j);
+  return new File([u], name, { type });
+}
+async function setPagePhoto(i, file) {
+  if (!draft?.pages?.[i]) return;
+  const blob = await compress(file);
+  draft.pages[i].photo = { blob, preview: URL.createObjectURL(blob) };
+  renderPages(); saveDraftLocal();
+}
+async function handleIncoming(files) {
+  files = files.filter(f => f.type.startsWith('image/'));
+  if (!files.length || !draft) return;
+  if (!isStory()) { addFiles(files); return; }
+  let i = photoTarget;
+  for (const f of files) {
+    if (i === null || i === undefined || !draft.pages[i] || draft.pages[i].photo) {
+      i = draft.pages.findIndex(p => !p.photo);
+      if (i < 0) { draft.pages.push({ text: '', photo: null }); i = draft.pages.length - 1; }
+    }
+    await setPagePhoto(i, f);
+    i = null;
+  }
+  photoTarget = null;
+}
+function renderPages() {
+  if (!draft || !isStory()) { $('#sPages').innerHTML = ''; return; }
+  const n = draft.pages.length;
+  $('#sPages').innerHTML = draft.pages.map((p, i) => `
+    <div class="spage" style="--c:var(--${draft.color})">
+      <div class="shead"><span>עמוד ${i + 1}</span>${n > 1 ? `<button type="button" data-del="${i}" aria-label="מחיקת העמוד">🗑️</button>` : ''}</div>
+      ${p.photo
+        ? `<div class="pic"><img src="${p.photo.preview || photoUrl(p.photo.path)}" alt=""><button type="button" class="x" data-rm="${i}" aria-label="הסרת התמונה">✕</button></div>`
+        : `<div class="pic-actions"><button type="button" class="btn mini" data-cam="${i}">📷 לצלם</button><button type="button" class="btn mini" data-gal="${i}">🖼️ גלריה</button><button type="button" class="btn mini" data-ai="${i}">✨ ציור AI</button></div>`}
+      <textarea data-t="${i}" placeholder="${i === 0 ? 'פעם אחת...' : 'ומה קרה אחר כך?'}">${esc(p.text)}</textarea>
+      <div class="fill ${p.text.length > FULL_PAGE ? '' : 'hidden'}" data-fill="${i}">העמוד מתמלא. אולי זה זמן טוב לעבור לעמוד הבא? 📄</div>
+    </div>`).join('');
+  const box = $('#sPages');
+  box.querySelectorAll('textarea').forEach(t => {
+    const fit = () => { t.style.height = 'auto'; t.style.height = Math.max(150, t.scrollHeight) + 'px'; };
+    fit();
+    t.oninput = () => {
+      const i = +t.dataset.t; draft.pages[i].text = t.value; fit();
+      box.querySelector(`[data-fill="${i}"]`).classList.toggle('hidden', t.value.length <= FULL_PAGE);
+      saveDraftLocal();
+    };
+  });
+  box.querySelectorAll('[data-cam]').forEach(b => b.onclick = () => { photoTarget = +b.dataset.cam; $('#camInput').click(); });
+  box.querySelectorAll('[data-gal]').forEach(b => b.onclick = () => { photoTarget = +b.dataset.gal; $('#galInput').click(); });
+  box.querySelectorAll('[data-ai]').forEach(b => b.onclick = () => {
+    const i = +b.dataset.ai;
+    openAi(file => setPagePhoto(i, file), draft.pages[i].text.trim().slice(0, 300));
+  });
+  box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
+    const pg = draft.pages[+b.dataset.rm]; if (pg.photo?.preview) URL.revokeObjectURL(pg.photo.preview);
+    pg.photo = null; renderPages(); saveDraftLocal();
+  });
+  box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+    const i = +b.dataset.del, pg = draft.pages[i];
+    const remove = () => { draft.pages.splice(i, 1); renderPages(); saveDraftLocal(); closeModal(); };
+    if (!pg.text.trim() && !pg.photo) return remove();
+    modal(`<h3>למחוק את עמוד ${i + 1}?</h3><p>הטקסט והתמונה של העמוד הזה יימחקו.</p>
+      <div class="row"><button class="btn" data-x>לא</button><button class="btn danger" id="delPg">🗑️ למחוק</button></div>`,
+      m => m.querySelector('#delPg').onclick = remove);
+  });
+}
+$('#addPageBtn').onclick = () => {
+  draft.pages.push({ text: '', photo: null });
+  renderPages(); saveDraftLocal();
+  const ts = $('#sPages').querySelectorAll('textarea'), last = ts[ts.length - 1];
+  last.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => last.focus(), 300);
+};
 $('#promptBtn').onclick = () => {
   const p = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
   if (!$('#cTitle').value.trim()) $('#cTitle').value = p;
@@ -618,20 +783,32 @@ $('#promptBtn').onclick = () => {
 $('#cBody').addEventListener('input', e => { e.target.style.height = 'auto'; e.target.style.height = Math.max(340, e.target.scrollHeight) + 'px'; });
 
 $('#saveBtn').onclick = async () => {
-  const title = $('#cTitle').value.trim(), body = $('#cBody').value.trim();
-  if (!title && !body && !draft.photos.length) { toast('הדף עדיין ריק 🙂'); return; }
+  const title = $('#cTitle').value.trim(), story = isStory();
+  let body = story ? '' : $('#cBody').value.trim();
+  const hasStory = story && draft.pages.some(p => p.text.trim() || p.photo);
+  if (!title && !body && !draft.photos.length && !hasStory) { toast('הדף עדיין ריק 🙂'); return; }
   const btn = $('#saveBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> שומר...';
   try {
-    const paths = [];
-    for (const p of draft.photos) {
-      if (p.path) { paths.push(p.path); continue; }
+    const upload = async p => {
+      if (p.path) return p.path;
       const path = `${user.id}/${crypto.randomUUID()}.jpg`;
       const { error } = await sb.storage.from('photos').upload(path, p.blob, { contentType: 'image/jpeg' });
       if (error) throw error;
       urlCache.set(path, { url: p.preview, exp: Date.now() + 3600e3 });
-      paths.push(path);
+      p.path = path;
+      return path;
+    };
+    let paths = [], pages = null;
+    if (story) {
+      pages = [];
+      for (const pg of draft.pages) pages.push({ text: pg.text.trim(), photo: pg.photo ? await upload(pg.photo) : null });
+      pages = pages.filter((pg, i) => pg.text || pg.photo || i === 0);
+      body = pages.map(pg => pg.text).filter(Boolean).join('\n\n');
+      paths = pages.map(pg => pg.photo).filter(Boolean);
+    } else {
+      for (const p of draft.photos) paths.push(await upload(p));
     }
-    const row = { kind: draft.kind, mood: draft.mood, color: draft.color, entry_date: $('#cDate').value || todayISO(), title, body, photos: paths };
+    const row = { kind: draft.kind, mood: draft.mood, color: draft.color, entry_date: $('#cDate').value || todayISO(), title, body, photos: paths, pages };
     let saved, removed = [];
     if (draft.id) {
       const old = entries.find(e => e.id === draft.id);
@@ -666,10 +843,15 @@ async function openViewer(e) {
     ${e.mood ? `<div class="big-mood">${e.mood}</div>` : ''}
     <div class="when"><span class="badge">${k.emoji} ${k.label}</span> ${fmtDay(e.entry_date)}</div>
     ${e.title ? `<h2>${esc(e.title)}</h2>` : ''}
+    ${e.pages?.length ? e.pages.map((pg, i) => `
+      ${e.pages.length > 1 ? `<div class="vp-num">עמוד ${i + 1}</div>` : ''}
+      ${pg.photo ? `<img class="vp-img" src="${photoUrl(pg.photo)}" alt="">` : ''}
+      ${pg.text ? `<div class="body">${esc(pg.text)}</div>` : ''}`).join('') : `
     ${e.body ? `<div class="body">${esc(e.body)}</div>` : ''}
-    ${e.photos.length ? `<div class="gallery">${e.photos.map(p => `<div class="polaroid"><img src="${photoUrl(p)}" alt=""></div>`).join('')}</div>` : ''}
+    ${e.photos.length ? `<div class="gallery">${e.photos.map(p => `<div class="polaroid"><img src="${photoUrl(p)}" alt=""></div>`).join('')}</div>` : ''}`}
   </div>`;
-  $('#vPage').querySelectorAll('.gallery img').forEach(img => img.onclick = () => {
+  $('#bookRow').classList.toggle('hidden', !(e.kind === 'story' && e.pages?.length));
+  $('#vPage').querySelectorAll('.gallery img, .vp-img').forEach(img => img.onclick = () => {
     const lb = document.createElement('div'); lb.className = 'lightbox'; lb.innerHTML = `<img src="${img.src}" alt="">`;
     lb.onclick = () => lb.remove(); document.body.appendChild(lb);
   });
@@ -684,6 +866,11 @@ async function openViewer(e) {
   }
 }
 $('#editBtn').onclick = () => go('#/edit/' + viewing.id);
+$('#readBookBtn').onclick = () => {
+  const e = viewing;
+  GalBook.open({ title: e.title, date: fmtDay(e.entry_date), color: e.color,
+    pages: (e.pages || []).map(pg => ({ text: pg.text, img: pg.photo ? photoUrl(pg.photo) : null })) });
+};
 
 $('#deleteBtn').onclick = () => modal(`
   <h3>למחוק את הדף?</h3><p>אי אפשר להחזיר אותו אחרי המחיקה.</p>
@@ -728,7 +915,7 @@ async function doShare(e, withLink) {
     }
   }
   const k = KINDS[e.kind] || KINDS.thought;
-  let body = e.body || '';
+  let body = e.pages?.length > 1 ? e.pages.map((pg, i) => pg.text ? `📄 ${i + 1}\n${pg.text}` : '').filter(Boolean).join('\n\n') : (e.body || '');
   if (link && body.length > 700) body = body.slice(0, 700).trim() + '...';
   const text = [e.title ? `${k.emoji} *${e.title}*` : k.emoji, body, link ? `📔 מהיומן של גל: ${link}` : ''].filter(Boolean).join('\n\n');
   closeModal();
@@ -763,10 +950,98 @@ function modal(html, init) {
 }
 function closeModal() { $('#modalRoot').innerHTML = ''; }
 
+/* ---------------- AI DRAWING ---------------- */
+const AI_STYLES = [['cartoon', '🎨 מצויר'], ['watercolor', '💧 צבעי מים'], ['comic', '💥 קומיקס'], ['pixel', '👾 פיקסלים'], ['3d', '🧸 תלת־ממד'], ['pencil', '✏️ עפרונות']];
+const AI_ERRORS = {
+  limit: 'נגמרו הציורים להיום (10 ביום). מחר יש עוד! 🌙',
+  blocked: 'את זה אני לא יכול לצייר. אולי ננסה משהו אחר? 🙂',
+  no_key: 'הציורים עוד לא הופעלו. צריך לבקש מאבא להפעיל אותם בהגדרות ⚙️',
+  bad_key: 'יש בעיה בהגדרות של הציורים. כדאי לבקש מאבא לבדוק.',
+  empty: 'צריך לכתוב מה לצייר.',
+};
+let aiStyle = 'cartoon';
+
+async function openAi(onDone, seed = '') {
+  const { data: st } = await sb.rpc('ai_status');
+  if (!st?.enabled) {
+    modal(`<h3>✨ ציורי AI</h3><p>${AI_ERRORS.no_key}</p><div class="row"><button class="btn" data-x>הבנתי</button></div>`);
+    return;
+  }
+  const left = Math.max(0, st.limit - st.used_today);
+  modal(`
+    <h3>✨ ציור בבינה מלאכותית</h3>
+    <p>מתארים מה רוצים לראות, והבינה המלאכותית מציירת.</p>
+    <textarea class="ai-text" id="aiPrompt" maxlength="400" placeholder="למשל: דרקון קטן קורא ספר מתחת לעץ, בלילה עם ירח">${esc(seed)}</textarea>
+    <div class="styles" id="aiStyles"></div>
+    <div id="aiOut"></div>
+    <div class="row" id="aiBtns"><button class="btn" data-x>ביטול</button><button class="btn primary" id="aiGo" ${left ? '' : 'disabled'}>🎨 לצייר</button></div>
+    <small class="quota" id="aiQuota">${left ? `נשארו ${left} ציורים להיום` : AI_ERRORS.limit}</small>`,
+    m => {
+      const drawStyles = () => {
+        m.querySelector('#aiStyles').innerHTML = AI_STYLES.map(([k, l]) => `<button type="button" class="pick ${aiStyle === k ? 'on' : ''}" data-s="${k}">${l}</button>`).join('');
+        m.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { aiStyle = b.dataset.s; drawStyles(); });
+      };
+      drawStyles();
+      const out = m.querySelector('#aiOut'), btns = m.querySelector('#aiBtns');
+      const go = async () => {
+        const prompt = m.querySelector('#aiPrompt').value.trim();
+        if (prompt.length < 2) { out.innerHTML = `<div class="ai-err">${AI_ERRORS.empty}</div>`; return; }
+        out.innerHTML = '<div class="ai-loading"><span class="brush">🖌️</span><br>מצייר... זה לוקח כמה שניות</div>';
+        btns.classList.add('hidden');
+        const { data, error } = await sb.functions.invoke('generate-image', { body: { prompt, style: aiStyle } });
+        let res = data;
+        if (error) { try { res = await error.context.json(); } catch { res = { error: 'failed' }; } }
+        btns.classList.remove('hidden');
+        if (!res?.image) {
+          out.innerHTML = `<div class="ai-err">${AI_ERRORS[res?.error] || 'הציור לא הצליח הפעם. אפשר לנסות שוב.'}</div>`;
+          if (res?.error === 'limit') { m.querySelector('#aiGo').disabled = true; m.querySelector('#aiQuota').textContent = AI_ERRORS.limit; }
+          return;
+        }
+        const left = Math.max(0, res.limit - res.used);
+        m.querySelector('#aiQuota').textContent = left ? `נשארו ${left} ציורים להיום` : 'זה היה הציור האחרון להיום';
+        const file = b64ToFile(res.image, 'ai-drawing.png', res.mime || 'image/png');
+        const url = URL.createObjectURL(file);
+        out.innerHTML = `<div class="ai-result"><img src="${url}" alt=""></div>`;
+        btns.innerHTML = `<button class="btn" id="aiAgain" ${left ? '' : 'disabled'}>🔄 לצייר שוב</button><button class="btn primary" id="aiUse">✅ להוסיף לדף</button>`;
+        btns.querySelector('#aiUse').onclick = () => { closeModal(); onDone(file); toast('הציור נוסף ✨'); };
+        btns.querySelector('#aiAgain').onclick = go;
+      };
+      m.querySelector('#aiGo').onclick = go;
+      if (!seed) setTimeout(() => m.querySelector('#aiPrompt').focus(), 250);
+    });
+}
+
+/* ---------------- SETTINGS ---------------- */
 $('#menuBtn').onclick = () => modal(`
   <h3>⚙️ הגדרות</h3><p>מחובר בתור <b dir="ltr">${esc(user?.email)}</b></p>
-  <div class="row"><button class="btn" data-x>סגירה</button><button class="btn danger" id="logout">יציאה מהיומן</button></div>`,
-  m => m.querySelector('#logout').onclick = async () => { closeModal(); await sb.auth.signOut(); });
+  <div class="row"><button class="btn" data-x>סגירה</button><button class="btn danger" id="logout">יציאה מהיומן</button></div>
+  <div class="admin">
+    <b>✨ ציורי AI (להורים)</b>
+    <small id="aiAdminStatus">בודק...</small>
+    <input type="password" id="aiKey" placeholder="Gemini API key" autocomplete="off" spellcheck="false">
+    <div class="row"><button class="btn" id="aiKeyOff">כיבוי</button><button class="btn primary" id="aiKeySave">שמירת מפתח</button></div>
+    <ul class="log" id="aiLog"></ul>
+  </div>`,
+  async m => {
+    m.querySelector('#logout').onclick = async () => { closeModal(); await sb.auth.signOut(); };
+    const status = m.querySelector('#aiAdminStatus');
+    const refresh = async () => {
+      const { data: st } = await sb.rpc('ai_status');
+      status.innerHTML = st?.enabled
+        ? `פעיל. היום נוצרו ${st.used_today} מתוך ${st.limit} ציורים. המפתח שמור בשרת ולא בטלפון.`
+        : 'כבוי. כדי להפעיל, מדביקים מפתח מ-<span dir="ltr">aistudio.google.com/apikey</span> (צריך חשבון עם חיוב, בערך 4 סנט לציור).';
+      const { data: log } = await sb.from('ai_images').select('created_at,prompt,ok').order('created_at', { ascending: false }).limit(5);
+      m.querySelector('#aiLog').innerHTML = (log || []).map(r => `<li>${r.ok ? '✅' : '⛔'} ${esc(r.prompt)}</li>`).join('');
+    };
+    const save = async val => {
+      const { error } = await sb.rpc('set_ai_key', { p_key: val });
+      if (error) { toast('השמירה לא הצליחה'); return; }
+      m.querySelector('#aiKey').value = ''; toast(val ? 'המפתח נשמר ✨' : 'הציורים כובו'); refresh();
+    };
+    m.querySelector('#aiKeySave').onclick = () => { const v = m.querySelector('#aiKey').value.trim(); if (v) save(v); };
+    m.querySelector('#aiKeyOff').onclick = () => save('');
+    refresh();
+  });
 
 /* ---------------- BOOT ---------------- */
 sb.auth.getSession().then(({ data }) => { if (!data.session) $('#auth').classList.remove('hidden'); });
