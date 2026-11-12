@@ -177,6 +177,85 @@ main{max-width:720px;margin:0 auto;padding:6px 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading{display:grid;place-items:center;padding:70px 0}
 @media (min-width:640px){ .thumbs .polaroid{width:120px;height:138px} }
+
+/* keypad phones (Qin F25 etc.): visible focus for D-pad navigation */
+:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px}
+.card:focus-visible{outline:4px solid var(--accent-2);outline-offset:4px}
+
+/* small screens (Qin F25: ~320x480 CSS px) */
+@media (max-width:360px), (max-height:560px){
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom));background-size:30px 30px,30px 30px;background-position:0 0,15px 15px}
+  .top{position:static;padding:8px 10px 4px;background:none}
+  .brand h1{font-size:22px}
+  .brand .count{font-size:12px}
+  .icon-btn{width:36px;height:36px;border-radius:11px;font-size:17px;border-width:2px;box-shadow:0 2px 0 var(--ink)}
+  .chips{margin-top:8px;gap:6px}
+  .chip{padding:4px 10px;font-size:13px;border-width:2px}
+  main{padding:4px 10px}
+  .day-label{font-size:14px;margin:14px 2px 8px;padding:2px 9px;border-width:2px}
+  .card{padding:16px 12px 12px;margin-bottom:16px;border-radius:14px;border-width:2px}
+  .card .tape{width:70px;margin-left:-35px;height:20px;top:-10px}
+  .card .mood{font-size:22px;top:10px;left:10px}
+  .card h2{font-size:18px;padding-left:26px}
+  .card .excerpt{font-size:14px;line-height:1.65;-webkit-line-clamp:3}
+  .badge{font-size:12px;padding:0 7px}
+  .thumbs{gap:8px;margin-top:10px}
+  .thumbs .polaroid{width:72px;height:84px;padding:4px 4px 12px}
+  .thumbs .more{width:46px;font-size:16px}
+  .fab{bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 18px;font-size:17px;border-width:2.5px;box-shadow:0 3px 0 var(--ink)}
+  .empty{padding:36px 10px}.empty .big{font-size:46px}.empty h2{font-size:19px}.empty p{font-size:15px}
+
+  .sheet{padding:8px 10px 24px}
+  .sheet-bar{gap:6px;margin-bottom:6px}
+  .sheet-bar .title{font-size:17px}
+  .date-input{padding:4px 6px;font-size:13px;border-width:2px;max-width:128px}
+  .section-label{font-size:14px;margin:10px 2px 6px}
+  .pick-row,.moods{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:3px 2px}
+  .pick-row::-webkit-scrollbar,.moods::-webkit-scrollbar{display:none}
+  .pick-row{gap:5px}
+  .pick{flex:none;padding:4px 8px;font-size:13px;border-width:2px;border-radius:11px}
+  .moods{gap:3px}
+  .moods button{flex:none}
+  .moods button{width:34px;height:34px;font-size:19px;border-width:2px}
+  .colors{gap:8px}.colors button{width:28px;height:28px;border-width:2px}
+  .page{margin-top:12px;border-radius:14px;border-width:2px}
+  .page::before{right:26px}
+  .page .head{height:12px}
+  .page input,.page textarea{padding:0 36px 0 10px}
+  .page input{font-size:18px;height:46px;margin-top:2px}
+  .page textarea{font-size:16px;line-height:30px;min-height:210px;background-image:linear-gradient(transparent 29px,var(--line) 29px,var(--line) 30px);background-size:100% 30px}
+  .prompt-btn{margin:4px 36px 10px 10px;font-size:12px;padding:4px 9px}
+  .btn{padding:7px 12px;font-size:14px;border-width:2px;border-radius:11px;box-shadow:0 2px 0 var(--ink)}
+  .photo-grid{gap:10px;margin-top:10px}
+  .photo-grid .polaroid{width:84px;height:98px;padding:4px 4px 12px}
+  .photo-grid .x{width:26px;height:26px;top:-8px;left:-8px;font-size:13px}
+  .save-row{margin-top:18px}
+  .save-row .btn{font-size:16px;padding:10px 22px}
+
+  .view-page{padding:16px 36px 18px 10px}
+  .view-page h2{font-size:21px;padding-left:34px}
+  .view-page .big-mood{font-size:28px;top:18px;left:10px}
+  .view-page .when{font-size:12px;gap:5px}
+  .view-page .body{font-size:16px;line-height:30px;background-image:linear-gradient(transparent 29px,var(--line) 29px,var(--line) 30px);background-size:100% 30px}
+  .gallery{gap:10px;margin-top:14px}
+  .gallery .polaroid{padding:4px 4px 12px}
+  .view-actions{margin-top:14px;gap:8px}
+  .view-actions .btn.wa{font-size:16px;padding:9px 18px}
+
+  .modal{padding:16px 14px calc(16px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0}
+  .modal h3{font-size:18px}.modal p{font-size:14px;margin-bottom:10px}
+  .toggle{padding:9px;gap:9px;margin-bottom:12px}.toggle small{font-size:12px}
+
+  .auth{margin-top:3vh;padding:0 10px}
+  .auth .page{padding:18px 14px 16px}
+  .auth h1{font-size:25px}
+  .auth .sub{font-size:14px;margin-bottom:12px}
+  .field{margin-bottom:9px}.field span{font-size:13px}
+  .field input{padding:8px 10px;font-size:16px;border-width:2px}
+  .auth .btn{font-size:16px;padding:9px}
+  .auth .switch{font-size:13px;margin-top:10px}
+  .toast{bottom:calc(64px + env(safe-area-inset-bottom));font-size:13px;padding:8px 14px}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -414,7 +493,7 @@ function renderFeed() {
     const k = KINDS[e.kind] || KINDS.thought;
     const thumbs = e.photos.slice(0, 3).map(p => `<div class="polaroid"><img loading="lazy" src="${photoUrl(p)}" alt=""></div>`).join('')
       + (e.photos.length > 3 ? `<div class="polaroid more">+${e.photos.length - 3}</div>` : '');
-    html += `<article class="card" style="--c:var(--${e.color})" data-id="${e.id}">
+    html += `<article class="card" tabindex="0" role="button" style="--c:var(--${e.color})" data-id="${e.id}">
       <div class="tape"></div>
       ${e.mood ? `<div class="mood">${e.mood}</div>` : ''}
       <div class="meta"><span class="badge">${k.emoji} ${k.label}</span>${e.is_public ? '<span class="shared-dot">🔗 משותף</span>' : ''}</div>
@@ -424,7 +503,10 @@ function renderFeed() {
     </article>`;
   }
   $('#feed').innerHTML = html;
-  $('#feed').querySelectorAll('.card').forEach(c => c.onclick = () => go('#/e/' + c.dataset.id));
+  $('#feed').querySelectorAll('.card').forEach(c => {
+    c.onclick = () => go('#/e/' + c.dataset.id);
+    c.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go('#/e/' + c.dataset.id); } };
+  });
 }
 
 /* ---------------- ROUTER ---------------- */
